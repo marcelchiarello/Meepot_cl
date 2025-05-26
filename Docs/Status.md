@@ -289,5 +289,92 @@ This will establish the core functionality needed for other features like invita
 
 ---
 
-**Last Updated:** 2025-01-27 00:30 UTC  
-**Status:** Foundation Complete, Configured for Firebase Hosting, Ready for Deployment
+## 📝 Second Update (2025-01-27 01:15 UTC)
+
+### 🚀 DEPLOYMENT COMPLETATO! 
+
+**Il sito è ora LIVE su**: https://meepotcl.web.app ✅
+
+### 🆕 Attività Completate:
+
+1. **Firebase Hosting Deploy** ✅
+   - Aggiornato a piano Blaze (richiesto per Next.js)
+   - Abilitato Web Frameworks experiment
+   - Deploy completato con successo
+   - Cloud Functions create per SSR
+   - Cleanup policy impostata (7 giorni)
+
+2. **Database Firestore** ✅
+   - Creato database in modalità test
+   - Location: europe-west
+   - Regole di sicurezza deployate
+
+3. **Storage Firebase** ✅
+   - Configurato in modalità test
+   - Pronto per upload di immagini/file
+
+4. **Google OAuth Setup** 🔄
+   - Client ID: `191068431187-f5du9c943t13o5mmb26bpbbrgmoq0kpd.apps.googleusercontent.com`
+   - Client Secret configurato
+   - URI autorizzati da aggiungere in Google Cloud Console
+   - Email di supporto: marcello.901@gmail.com
+
+### 🐛 Bug Fix Applicati:
+
+- Risolto errore di inizializzazione Firebase per SSR
+- Sistemato problema di variabili non definite
+- Configurato correttamente l'export dei moduli
+
+### 📋 TODO - Azioni Immediate Richieste:
+
+1. **GENERA NEXTAUTH_SECRET** (Critico!)
+   ```bash
+   openssl rand -base64 32
+   ```
+   Poi aggiorna in `.env.production` e rideploya
+
+2. **Configura Google OAuth URIs**
+   Vai su: https://console.cloud.google.com/apis/credentials
+   
+   Aggiungi Authorized JavaScript origins:
+   - https://meepotcl.web.app
+   - https://meepotcl.firebaseapp.com
+   - http://localhost:3000
+   
+   Aggiungi Authorized redirect URIs:
+   - https://meepotcl.web.app/api/auth/callback/google
+   - https://meepotcl.firebaseapp.com/api/auth/callback/google
+   - http://localhost:3000/api/auth/callback/google
+
+3. **Abilita Authentication Methods**
+   - Email/Password in Firebase Console
+   - Google OAuth già parzialmente configurato
+
+### 📊 Stato Tecnico Attuale:
+
+- **Build**: ✅ Funzionante
+- **Deploy**: ✅ Live su Firebase Hosting
+- **Homepage**: ✅ Accessibile
+- **Auth Google**: ❌ Richiede configurazione URIs
+- **Auth Email**: ❌ Da abilitare in Firebase Console
+- **Database**: ✅ Operativo
+- **Storage**: ✅ Operativo
+
+### 🔧 File Chiave Aggiunti:
+
+- `.env.production` - Variabili per produzione
+- `configure-google-oauth.sh` - Script per setup OAuth
+- `enable-webframeworks.sh` - Promemoria per abilitare frameworks
+
+### 🎯 Prossimi Passi:
+
+1. Completa configurazione OAuth
+2. Genera e imposta NEXTAUTH_SECRET
+3. Redeploy con `firebase deploy`
+4. Test completo autenticazione
+5. Inizia sviluppo features (Event Creation)
+
+---
+
+**Last Updated:** 2025-01-27 01:15 UTC  
+**Status:** DEPLOYED & LIVE 🎉 - Richiede configurazione finale OAuth

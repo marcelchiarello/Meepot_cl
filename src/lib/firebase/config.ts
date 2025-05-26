@@ -14,10 +14,16 @@ const firebaseConfig = {
   measurementId: process.env.NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID || 'G-CSSC4YPCM6'
 }
 
-let app: FirebaseApp
-let auth: Auth
-let db: Firestore
-let storage: FirebaseStorage
+// Export dummy instances for server-side rendering
+const dummyAuth = {} as Auth
+const dummyDb = {} as Firestore
+const dummyStorage = {} as FirebaseStorage
+const dummyApp = {} as FirebaseApp
+
+let app: FirebaseApp = dummyApp
+let auth: Auth = dummyAuth
+let db: Firestore = dummyDb
+let storage: FirebaseStorage = dummyStorage
 let analytics: Analytics | null = null
 
 // Only initialize Firebase on the client side
@@ -40,23 +46,10 @@ if (typeof window !== 'undefined') {
   })
 }
 
-// Export dummy instances for server-side rendering
-const dummyAuth = {} as Auth
-const dummyDb = {} as Firestore
-const dummyStorage = {} as FirebaseStorage
-const dummyApp = {} as FirebaseApp
-
-// Use conditional exports
-const exportedApp = typeof window !== 'undefined' ? app : dummyApp
-const exportedAuth = typeof window !== 'undefined' ? auth : dummyAuth
-const exportedDb = typeof window !== 'undefined' ? db : dummyDb
-const exportedStorage = typeof window !== 'undefined' ? storage : dummyStorage
-const exportedAnalytics = analytics
-
 export { 
-  exportedApp as app,
-  exportedAuth as auth,
-  exportedDb as db,
-  exportedStorage as storage,
-  exportedAnalytics as analytics
+  app,
+  auth,
+  db,
+  storage,
+  analytics
 }

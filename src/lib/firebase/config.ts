@@ -36,9 +36,15 @@ const dummyDb = {} as Firestore
 const dummyStorage = {} as FirebaseStorage
 const dummyApp = {} as FirebaseApp
 
+// Use conditional exports
+const exportedApp = typeof window !== 'undefined' ? app : dummyApp
+const exportedAuth = typeof window !== 'undefined' ? auth : dummyAuth
+const exportedDb = typeof window !== 'undefined' ? db : dummyDb
+const exportedStorage = typeof window !== 'undefined' ? storage : dummyStorage
+
 export { 
-  app: typeof window !== 'undefined' ? app : dummyApp,
-  auth: typeof window !== 'undefined' ? auth : dummyAuth,
-  db: typeof window !== 'undefined' ? db : dummyDb,
-  storage: typeof window !== 'undefined' ? storage : dummyStorage
+  exportedApp as app,
+  exportedAuth as auth,
+  exportedDb as db,
+  exportedStorage as storage
 }

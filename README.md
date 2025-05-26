@@ -124,7 +124,19 @@ npm run typecheck # Run TypeScript compiler checks
 
 ## 🚀 Deployment
 
-The app is configured for deployment on Vercel:
+### Deploy to Netlify (Recommended)
+
+[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marcelchiarello/Meepot_cl)
+
+The app is optimized for Netlify deployment:
+
+1. Click the deploy button above or import manually
+2. Add environment variables in Netlify dashboard
+3. Deploy! See [Netlify Deployment Guide](./Docs/NETLIFY_DEPLOYMENT.md) for details
+
+### Deploy to Vercel
+
+The app also works with Vercel:
 
 1. Push your code to GitHub
 2. Import the project in Vercel

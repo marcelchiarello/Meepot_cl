@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "postbuild": "next-sitemap"
   },
   "dependencies": {
     "@auth/firebase-adapter": "^2.9.1",
@@ -60,6 +61,7 @@
     "zustand": "^4.5.0"
   },
   "devDependencies": {
+    "@netlify/plugin-nextjs": "^5.11.2",
     "@types/mapbox-gl": "^3.1.0",
     "@types/node": "^20.11.5",
     "@types/react": "^18.2.48",

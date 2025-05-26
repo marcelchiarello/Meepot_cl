@@ -1,0 +1,93 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+    
+    function isOwner(userId) {
+      return isAuthenticated() && request.auth.uid == userId;
+    }
+    
+    function hasEventRole(eventId, roles) {
+      return isAuthenticated() && 
+        exists(/databases/$(database)/documents/events/$(eventId)/participants/$(request.auth.uid)) &&
+        get(/databases/$(database)/documents/events/$(eventId)/participants/$(request.auth.uid)).data.role in roles;
+    }
+    
+    function canManageEvent(eventId) {
+      return hasEventRole(eventId, ['organizer', 'co_organizer']);
+    }
+    
+    function canViewEvent(eventId) {
+      return hasEventRole(eventId, ['organizer', 'co_organizer', 'collaborator', 'participant', 'guest', 'pending']) ||
+             get(/databases/$(database)/documents/events/$(eventId)).data.visibility == 'public';
+    }
+    
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated();
+      allow create: if isOwner(userId);
+      allow update: if isOwner(userId);
+      allow delete: if false;
+    }
+    
+    // Events collection
+    match /events/{eventId} {
+      allow read: if canViewEvent(eventId);
+      allow create: if isAuthenticated();
+      allow update: if canManageEvent(eventId);
+      allow delete: if hasEventRole(eventId, ['organizer']);
+      
+      // Participants subcollection
+      match /participants/{participantId} {
+        allow read: if canViewEvent(eventId);
+        allow create: if canManageEvent(eventId) || 
+                        (isAuthenticated() && participantId == request.auth.uid);
+        allow update: if canManageEvent(eventId) || 
+                        (isOwner(participantId) && resource.data.role == request.resource.data.role);
+        allow delete: if canManageEvent(eventId);
+      }
+      
+      // Tasks subcollection
+      match /tasks/{taskId} {
+        allow read: if canViewEvent(eventId);
+        allow create: if hasEventRole(eventId, ['organizer', 'co_organizer', 'collaborator']);
+        allow update: if hasEventRole(eventId, ['organizer', 'co_organizer', 'collaborator', 'participant']);
+        allow delete: if canManageEvent(eventId);
+      }
+      
+      // Comments subcollection
+      match /comments/{commentId} {
+        allow read: if canViewEvent(eventId);
+        allow create: if hasEventRole(eventId, ['organizer', 'co_organizer', 'collaborator', 'participant']);
+        allow update: if isOwner(resource.data.userId) && canViewEvent(eventId);
+        allow delete: if isOwner(resource.data.userId) || canManageEvent(eventId);
+      }
+      
+      // Expenses subcollection
+      match /expenses/{expenseId} {
+        allow read: if canViewEvent(eventId);
+        allow create: if hasEventRole(eventId, ['organizer', 'co_organizer', 'collaborator', 'participant']);
+        allow update: if isOwner(resource.data.paidBy) || canManageEvent(eventId);
+        allow delete: if isOwner(resource.data.paidBy) || canManageEvent(eventId);
+      }
+    }
+    
+    // Invitations collection
+    match /invitations/{invitationId} {
+      allow read: if isAuthenticated() || resource.data.type in ['public'];
+      allow create: if isAuthenticated() && 
+                      canManageEvent(request.resource.data.eventId);
+      allow update: if canManageEvent(resource.data.eventId);
+      allow delete: if canManageEvent(resource.data.eventId);
+    }
+    
+    // Contacts collection (user's personal contacts)
+    match /contacts/{userId}/userContacts/{contactId} {
+      allow read: if isOwner(userId);
+      allow write: if isOwner(userId);
+    }
+  }
+}

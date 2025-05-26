@@ -48,6 +48,11 @@ export default function RegisterPage() {
     setIsLoading(true)
 
     try {
+      // Check if we're on the client side
+      if (typeof window === 'undefined') {
+        throw new Error('Registration must be performed on the client side')
+      }
+
       // Create user with Firebase Auth
       const userCredential = await createUserWithEmailAndPassword(
         auth,

@@ -124,24 +124,34 @@ npm run typecheck # Run TypeScript compiler checks
 
 ## 🚀 Deployment
 
-### Deploy to Netlify (Recommended)
+### Deploy to Firebase Hosting (Recommended)
 
-[![Deploy to Netlify](https://www.netlify.com/img/deploy/button.svg)](https://app.netlify.com/start/deploy?repository=https://github.com/marcelchiarello/Meepot_cl)
+The app is configured for Firebase Hosting with full Next.js support:
 
-The app is optimized for Netlify deployment:
+```bash
+# Install Firebase CLI
+npm install -g firebase-tools
 
-1. Click the deploy button above or import manually
-2. Add environment variables in Netlify dashboard
-3. Deploy! See [Netlify Deployment Guide](./Docs/NETLIFY_DEPLOYMENT.md) for details
+# Login to Firebase
+firebase login
 
-### Deploy to Vercel
+# Deploy everything
+firebase deploy
+```
 
-The app also works with Vercel:
+Your app will be available at:
+- https://meepotcl.web.app
+- https://meepotcl.firebaseapp.com
 
-1. Push your code to GitHub
-2. Import the project in Vercel
-3. Add environment variables
-4. Deploy!
+See [Firebase Hosting Deployment Guide](./Docs/FIREBASE_HOSTING_DEPLOYMENT.md) for detailed instructions.
+
+### Why Firebase Hosting?
+
+- 🔥 **Integrated with Firebase services** - Same project for hosting, database, auth
+- ⚡ **Global CDN** - Fast loading worldwide
+- 🔐 **Automatic SSL** - Secure by default
+- 💰 **Generous free tier** - 10GB hosting, 360MB/day bandwidth
+- 🚀 **Zero configuration** - Works out of the box with Next.js
 
 ## 📝 License
 
